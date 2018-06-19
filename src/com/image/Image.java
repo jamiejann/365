@@ -109,8 +109,6 @@ public class Image {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         BufferedImage original = createImageFromBytes(data);
 
-
-
          for (int i = 0; i< height; i++) {
              for (int j = 0; j < width; j++) {
                  Color mycolor = new Color(original.getRGB(i,j));
@@ -120,38 +118,15 @@ public class Image {
 
                  Color newRgb = new Color(red+green+blue, red+green+blue, red+green+blue);
                  img.setRGB(i,j, newRgb.getRGB());
-
              }
          }
 
-       // int[][] image2d = new int[height][width];
-       // for(int i = 0; i< height; i++){
-       //     for(int j = 0; j< width; j++){
-       //         Color mycolor = new Color(original.getRGB(i,j));
-       //         int red = mycolor.getRed();
-       //         int green = mycolor.getGreen();
-       //         int blue = mycolor.getBlue();
-       //         int rgb = (int) (0.21 * red + 0.72 * green + 0.07 * blue);
-       //         image2d[i][j] = rgb;
-       //     }
-       // }
-       // System.out.println(Arrays.deepToString(image2d));
-
-       // for (int i = 0; i< height; i++) {
-       //     for (int j = 0; j < width; j++) {
-       //         if(image2d[i][j] > 128) {
-       //             img.setRGB(i, j, Color.WHITE.getRGB());
-       //         } else {
-       //             img.setRGB(i, j, Color.BLACK.getRGB());
-       //         }
-       //     }
-       // }
         return img;
     }
 
 
     private BufferedImage dithering(byte[] data, int width, int height){
-        int[][] ditheringMatrix = new int[height][width];
+        int[][] ditheringMatrix = new int[5][5];
         for(int i=0; i<4; i++){
             for(int j=0; j<4; j++){
                 int randomNum = ThreadLocalRandom.current().nextInt(0, 255+1);
@@ -160,10 +135,7 @@ public class Image {
         }
         System.out.println(Arrays.deepToString(ditheringMatrix));
 
-
         BufferedImage original = createImageFromBytes(data);
-
-
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         int[][] image2d = new int[height][width];
@@ -178,10 +150,9 @@ public class Image {
                 image2d[i][j] = rgb;
             }
         }
-
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
-                if(image2d[i][j] > ditheringMatrix[i][j]){
+                if(image2d[i][j] < ditheringMatrix[i%4][j%4]){
                     newImage.setRGB(i,j, Color.BLACK.getRGB());
                 } else {
                     newImage.setRGB(i,j,Color.WHITE.getRGB());
