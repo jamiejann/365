@@ -11,55 +11,39 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="Image.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/com/image/Image.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-102">
-                  <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1243#1415#0" expanded="true" />
-                    <element signature="e#1414#1415#0" expanded="true" />
-                    <element signature="e#1235#1448#0" expanded="true" />
-                    <element signature="e#1447#1448#0" expanded="true" />
-                    <element signature="e#1676#1889#0" expanded="true" />
-                    <element signature="e#1888#1889#0" expanded="true" />
-                    <element signature="e#2548#2759#0" expanded="true" />
-                    <element signature="e#2758#2759#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Image.form" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/image/Image.form">
-              <provider selected="true" editor-type-id="ui-designer" />
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="Image.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/com/image/Image.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="31">
-                  <caret line="206" column="54" selection-start-line="206" selection-start-column="54" selection-end-line="206" selection-end-column="54" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#2548#2759#0" expanded="true" />
-                    <element signature="e#2758#2759#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="Image.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/image/Image.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4821">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1243#1415#0" expanded="true" />
+                <element signature="e#1414#1415#0" expanded="true" />
+                <element signature="e#1235#1448#0" expanded="true" />
+                <element signature="e#1447#1448#0" expanded="true" />
+                <element signature="e#1676#1889#0" expanded="true" />
+                <element signature="e#1888#1889#0" expanded="true" />
+                <element signature="e#2548#2759#0" expanded="true" />
+                <element signature="e#2758#2759#0" expanded="true" />
+                <element signature="e#5819#5999#0" expanded="true" />
+                <element signature="e#5998#5999#0" expanded="true" />
+                <element signature="e#6849#7119#0" expanded="true" />
+                <element signature="e#7118#7119#0" expanded="true" />
+                <element signature="e#7241#7511#0" expanded="true" />
+                <element signature="e#7510#7511#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Image.form" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/image/Image.form">
+          <provider selected="true" editor-type-id="ui-designer" />
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -85,8 +69,8 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="953" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1087" />
   </component>
@@ -213,15 +197,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1529357573008</updated>
-      <workItem from="1529357576731" duration="16749000" />
+      <workItem from="1529357576731" duration="22115000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16749000" />
+    <option name="totallyTimeSpent" value="22115000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-7" y="0" width="974" height="1087" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" />
@@ -233,12 +217,12 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2517839" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.25411522" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info id="Capture Tool" />
       <window_info id="Designer" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.084375" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1691023" />
       <window_info anchor="right" id="Database" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -262,7 +246,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -278,8 +262,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/image/Image.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+        <state relative-caret-position="-4821">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1243#1415#0" expanded="true" />
@@ -290,6 +274,12 @@
             <element signature="e#1888#1889#0" expanded="true" />
             <element signature="e#2548#2759#0" expanded="true" />
             <element signature="e#2758#2759#0" expanded="true" />
+            <element signature="e#5819#5999#0" expanded="true" />
+            <element signature="e#5998#5999#0" expanded="true" />
+            <element signature="e#6849#7119#0" expanded="true" />
+            <element signature="e#7118#7119#0" expanded="true" />
+            <element signature="e#7241#7511#0" expanded="true" />
+            <element signature="e#7510#7511#0" expanded="true" />
           </folding>
         </state>
       </provider>

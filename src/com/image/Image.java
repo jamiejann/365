@@ -92,7 +92,7 @@ public class Image {
 
 
 
-       // histogram(data, width, height );
+       histogram(data, width, height );
         //Histogram
         //BufferedImage histogram = histogram(data, width, height);
 
@@ -176,25 +176,82 @@ public class Image {
                 //Color newRgb = new Color(red+green+blue, red+green+blue, red+green+blue);
             }
         }
+        while(getMax(redFreq) > 300){
+            for(int i = 0; i<redFreq.length; i++) {
+                int temp = redFreq[i];
+                temp = temp/2;
+                redFreq[i] = temp;
+            }
+        }
+        while(getMax(greenFreq) > 300){
+            for(int i = 0; i<greenFreq.length; i++) {
+                int temp = greenFreq[i];
+                temp = temp/2;
+                greenFreq[i] = temp;
+            }
+        }
+        while(getMax(blueFreq) > 300){
+            for(int i = 0; i<blueFreq.length; i++) {
+                int temp = blueFreq[i];
+                temp = temp/2;
+                blueFreq[i] = temp;
+            }
+        }
 
-        int redLen = redFreq.length;
-        JFrame histogramFrame = buildFrame();
-        JPanel histogramPane = new JPanel(){
+        JFrame histogramFrameRed = buildFrame();
+        JPanel histogramPaneRed = new JPanel(){
             @Override
             protected void paintComponent(Graphics g){
+                g.setColor(Color.red);
+                for(int i = 0; i<255; i++){
+                    g.fillRect(i,300, 1, -redFreq[i]);
+                }
                 }
             };
-        histogramFrame.add(histogramPane);
+        histogramFrameRed.add(histogramPaneRed);
+
+        JFrame histogramFrameGreen = buildFrame();
+        JPanel histogramPaneGreen = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                g.setColor(Color.green);
+                for(int i = 0; i<255; i++){
+                    g.fillRect(i,300, 1, -greenFreq[i]);
+                }
+            }
+        };
+        histogramFrameGreen.add(histogramPaneGreen);
+
+        JFrame histogramFrameBlue = buildFrame();
+        JPanel histogramPaneBlue = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                g.setColor(Color.blue);
+                for(int i = 0; i<255; i++){
+                    g.fillRect(i,300, 1, -blueFreq[i]);
+                }
+            }
+        };
+        histogramFrameBlue.add(histogramPaneBlue);
     }
 
     private int getMax(int [] data){
         int max = 0;
-        for(int i =0; i< data.length; i++){
-            if(data[i] > max){
-                max = data[i];
+        for (int aData : data) {
+            if (aData > max) {
+                max = aData;
             }
         }
         return max;
+    }
+    private int getMin(int [] data){
+        int min = data[0];
+        for(int aData : data) {
+            if (aData < min) {
+                min = aData;
+            }
+        }
+        return min;
     }
 
     private BufferedImage greyscale(byte[] data, int width, int height) {
