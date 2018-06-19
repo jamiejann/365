@@ -6,9 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.Buffer;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,10 +38,20 @@ public class Image {
     }
 
     private void runProcesses(byte[] data){
-
         BufferedImage image = createImageFromBytes(data);
         int height = image.getHeight();
         int width = image.getWidth();
+
+        //Original Image
+        JFrame originalFrame = buildFrame();
+        JPanel originalPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
+        };
+        originalFrame.add(originalPane);
 
         //MONOCHROME
         BufferedImage greyscaleImage = greyscale(data, width, height);
@@ -51,8 +64,6 @@ public class Image {
             }
         };
         frame.add(pane);
-
-
 
         //Dither
         BufferedImage ditheredImage = dithering(data, width, height);
@@ -67,6 +78,23 @@ public class Image {
         ditheringFrame.add(ditheringPane);
 
 
+        //Make Brighter
+        BufferedImage brighterImage = makeBrighter(data, width, height);
+        JFrame brighterFrame = buildFrame();
+        JPanel brighterPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(brighterImage, 0, 0, null);
+            }
+        };
+        brighterFrame.add(brighterPane);
+
+
+
+       // histogram(data, width, height );
+        //Histogram
+        //BufferedImage histogram = histogram(data, width, height);
 
     }
 
@@ -105,6 +133,70 @@ public class Image {
     }
     */
 
+    private BufferedImage makeBrighter(byte[] data, int width, int height){
+        BufferedImage original = createImageFromBytes(data);
+        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i< height; i++) {
+            for (int j = 0; j < width; j++) {
+                Color mycolor = new Color(original.getRGB(i, j));
+                int newRed = (int)(mycolor.getRed() * 1.5);
+                int newGreen = (int)(mycolor.getGreen() *1.5);
+                int newBlue = (int)(mycolor.getBlue()*1.5);
+                if(newRed > 255){
+                    newRed = 255;
+                }
+                if(newGreen > 255){
+                    newGreen = 255;
+                }
+                if(newBlue > 255){
+                    newBlue = 255;
+                }
+                Color newColor = new Color(newRed, newGreen, newBlue);
+                newImage.setRGB(i,j, newColor.getRGB());
+            }
+        }
+        return newImage;
+    }
+
+    private void histogram(byte[] data, int width, int height){
+        BufferedImage original = createImageFromBytes(data);
+
+        int [] redFreq = new int [256];
+        int [] greenFreq = new int [256];
+        int [] blueFreq = new int [256];
+        for (int i = 0; i< height; i++) {
+            for (int j = 0; j < width; j++) {
+                Color mycolor = new Color(original.getRGB(i,j));
+                int red = mycolor.getRed();
+                int green = mycolor.getGreen();
+                int blue = mycolor.getRed();
+                redFreq[red]++;
+                greenFreq[green]++;
+                blueFreq[blue]++;
+                //Color newRgb = new Color(red+green+blue, red+green+blue, red+green+blue);
+            }
+        }
+
+        int redLen = redFreq.length;
+        JFrame histogramFrame = buildFrame();
+        JPanel histogramPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                }
+            };
+        histogramFrame.add(histogramPane);
+    }
+
+    private int getMax(int [] data){
+        int max = 0;
+        for(int i =0; i< data.length; i++){
+            if(data[i] > max){
+                max = data[i];
+            }
+        }
+        return max;
+    }
+
     private BufferedImage greyscale(byte[] data, int width, int height) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         BufferedImage original = createImageFromBytes(data);
@@ -126,7 +218,7 @@ public class Image {
 
 
     private BufferedImage dithering(byte[] data, int width, int height){
-        int[][] ditheringMatrix = new int[5][5];
+        int[][] ditheringMatrix = new int[4][4];
         for(int i=0; i<4; i++){
             for(int j=0; j<4; j++){
                 int randomNum = ThreadLocalRandom.current().nextInt(0, 255+1);
@@ -167,7 +259,7 @@ public class Image {
     private static JFrame buildFrame(){
         JFrame frame = new JFrame();
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(800,800);
+        frame.setSize(704,576);
         frame.setVisible(true);
         return frame;
     }
