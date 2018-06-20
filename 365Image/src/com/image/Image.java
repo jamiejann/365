@@ -21,6 +21,10 @@ public class Image {
     private JPanel panel;
     private JTextField textField;
 
+    /**
+     * File Chooser, displays name of the file chosen in the textbox.
+     * Inputs file name into method readFileBytebyByte.
+     */
     public Image() {
         attachImageButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
@@ -37,6 +41,13 @@ public class Image {
         });
     }
 
+    /**
+     * Main part of ImageReader, converts data in bytes into working image with createImageFromBytes
+     * Commented description of what the block of code is doing
+     * createImageFromBytes creates images based on the modified byte data converted into BufferedImage.
+     * PaintComponent displays the BufferedImage into the JFrame.
+     * @param data
+     */
     private void runProcesses(byte[] data){
         BufferedImage image = createImageFromBytes(data);
         int height = image.getHeight();
@@ -52,6 +63,22 @@ public class Image {
             }
         };
         originalFrame.add(originalPane);
+
+        //Histogram
+        histogram(data, width, height );
+
+        //Make Brighter
+        BufferedImage brighterImage = makeBrighter(data, width, height);
+        JFrame brighterFrame = buildFrame();
+        JPanel brighterPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(brighterImage, 0, 0, null);
+            }
+        };
+        brighterFrame.add(brighterPane);
+
 
         //MONOCHROME
         BufferedImage greyscaleImage = greyscale(data, width, height);
@@ -76,44 +103,35 @@ public class Image {
             }
         };
         ditheringFrame.add(ditheringPane);
-
-
-        //Make Brighter
-        BufferedImage brighterImage = makeBrighter(data, width, height);
-        JFrame brighterFrame = buildFrame();
-        JPanel brighterPane = new JPanel(){
-            @Override
-            protected void paintComponent(Graphics g){
-                super.paintComponent(g);
-                g.drawImage(brighterImage, 0, 0, null);
-            }
-        };
-        brighterFrame.add(brighterPane);
-
-
-
-       histogram(data, width, height );
-        //Histogram
-        //BufferedImage histogram = histogram(data, width, height);
-
     }
+
+    /**
+     *
+     * @param file
+     * @throws IOException
+     */
 
     private void readImageByteByByte(File file) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
         int read;
         byte [] buff = new byte[4];
-        byte[] res;
+        byte[] imageInBytes;
         read = in.read(buff);
         do{
             out.write(buff, 0, read);
             out.flush();
-            res = out.toByteArray();
+            imageInBytes = out.toByteArray();
         } while((read = in.read(buff))>0);
 
-        runProcesses(res);
+        runProcesses(imageInBytes);
     }
 
+    /**
+     * Helper method to create image from modified byte array
+     * @param data
+     * @return
+     */
     private BufferedImage createImageFromBytes(byte[] data) {
         ByteArrayInputStream stream = new ByteArrayInputStream(data);
         try {
@@ -124,6 +142,14 @@ public class Image {
         return null;
     }
 
+    /**
+     * Method to make the image brighter 1.5x by first extracting each RBG Value of each pixel,
+     * multiplied by 1.5, and then setRBG of each pixel in a new image by the modified pixel.
+     * @param data
+     * @param width
+     * @param height
+     * @return
+     */
     private BufferedImage makeBrighter(byte[] data, int width, int height){
         BufferedImage original = createImageFromBytes(data);
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -149,6 +175,14 @@ public class Image {
         return newImage;
     }
 
+    /**
+     * Method to extract the frequency of each R, G, B into 3 individual arrays
+     * Normalizes the numbers so it can fit into JPanel, and then display each
+     * by fillRect pixel by pixel.
+     * @param data
+     * @param width
+     * @param height
+     */
     private void histogram(byte[] data, int width, int height){
         BufferedImage original = createImageFromBytes(data);
 
@@ -164,7 +198,6 @@ public class Image {
                 redFreq[red]++;
                 greenFreq[green]++;
                 blueFreq[blue]++;
-                //Color newRgb = new Color(red+green+blue, red+green+blue, red+green+blue);
             }
         }
         while(getMax(redFreq) > 300){
@@ -226,7 +259,11 @@ public class Image {
         histogramFrameBlue.add(histogramPaneBlue);
     }
 
-
+    /**
+     * Helper method to obtain maximum value in an int array.
+     * @param data
+     * @return
+     */
     private int getMax(int [] data){
         int max = 0;
         for (int aData : data) {
@@ -237,7 +274,11 @@ public class Image {
         return max;
     }
 
-
+    /**
+     * Helper method to obtain minimum value in an int array
+     * @param data
+     * @return
+     */
     private int getMin(int [] data){
         int min = data[0];
         for(int aData : data) {
@@ -248,7 +289,14 @@ public class Image {
         return min;
     }
 
-
+    /**
+     * Method to obtain greyscale image by multiplying each R, G, B, with 0.299, 0.587 and 0.144.
+     * and drawing each individual pixel by setRBG into a new BufferedImage.
+     * @param data
+     * @param width
+     * @param height
+     * @return
+     */
     private BufferedImage greyscale(byte[] data, int width, int height) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         BufferedImage original = createImageFromBytes(data);
@@ -269,6 +317,17 @@ public class Image {
     }
 
 
+    /**
+     * Method to apply dithering to an image.
+     * Used 4x4 Dithering matrix, generated by random values
+     * First converted byte array into 2d matrix of integers (Greyscaled)
+     * Then used ordered dithering on 2d Greyscale matrix of pixels.
+     *
+     * @param data
+     * @param width
+     * @param height
+     * @return
+     */
     private BufferedImage dithering(byte[] data, int width, int height){
         int[][] ditheringMatrix = new int[4][4];
         for(int i=0; i<4; i++){
@@ -282,6 +341,7 @@ public class Image {
         BufferedImage original = createImageFromBytes(data);
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+        //2D Array of greyscale pixels
         int[][] image2d = new int[height][width];
         for(int i = 0; i< height; i++){
             for(int j = 0; j< width; j++){
@@ -289,11 +349,12 @@ public class Image {
                 int red = mycolor.getRed();
                 int green = mycolor.getGreen();
                 int blue = mycolor.getBlue();
+                //Converting to Greyscale
                 int rgb = (int) (0.21 * red + 0.72 * green + 0.07 * blue);
-                //int rgb = (red + green + blue)/3;
                 image2d[i][j] = rgb;
             }
         }
+        //Ordered Dithering
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
                 if(image2d[i][j] < ditheringMatrix[i%4][j%4]){
@@ -306,10 +367,12 @@ public class Image {
         return newImage;
     }
 
-
+    /**
+     * Helper Method to create new frame.
+     * @return
+     */
     private static JFrame buildFrame(){
         JFrame frame = new JFrame();
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(704,576);
         frame.setVisible(true);
         return frame;
