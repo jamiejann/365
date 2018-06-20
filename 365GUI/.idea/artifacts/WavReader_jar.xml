@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WavReader:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WavReader_jar</output-path>
+    <root id="archive" name="WavReader.jar">
+      <element id="module-output" name="WavReader" />
+    </root>
+  </artifact>
+</component>

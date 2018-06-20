@@ -123,15 +123,6 @@ public class Image {
         }
         return null;
     }
-    /*
-    private byte[] makeBrighter(byte[] data){
-        byte[] newImage = new byte[data.length];
-        for(byte b : data) {
-            //byte temp = b*1.5;
-        }
-
-    }
-    */
 
     private BufferedImage makeBrighter(byte[] data, int width, int height){
         BufferedImage original = createImageFromBytes(data);
@@ -235,6 +226,7 @@ public class Image {
         histogramFrameBlue.add(histogramPaneBlue);
     }
 
+
     private int getMax(int [] data){
         int max = 0;
         for (int aData : data) {
@@ -244,6 +236,8 @@ public class Image {
         }
         return max;
     }
+
+
     private int getMin(int [] data){
         int min = data[0];
         for(int aData : data) {
@@ -253,6 +247,7 @@ public class Image {
         }
         return min;
     }
+
 
     private BufferedImage greyscale(byte[] data, int width, int height) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -312,7 +307,6 @@ public class Image {
     }
 
 
-
     private static JFrame buildFrame(){
         JFrame frame = new JFrame();
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -320,6 +314,7 @@ public class Image {
         frame.setVisible(true);
         return frame;
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Image Application");
