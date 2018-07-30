@@ -1,6 +1,7 @@
 package com.HuffLZW;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -20,11 +21,7 @@ public class HuffLZW {
     private JButton button;
     private JPanel panel1;
     private JTextField textField;
-    private JTextField Huffman;
-    private JTextField LZW;
     public static ArrayList<String> compressed = new ArrayList<>();
-
-
 
     public HuffLZW(){
         button.addActionListener(e -> {
@@ -46,19 +43,19 @@ public class HuffLZW {
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
         int read;
         byte [] buff = new byte[4];
-        byte[] imageInBytes;
+        byte[] fileInBytes;
         read = in.read(buff);
         do{
             out.write(buff, 0, read);
             out.flush();
-            imageInBytes = out.toByteArray();
+            fileInBytes = out.toByteArray();
         } while((read = in.read(buff))>0);
 
-        runHuffman(imageInBytes);
+        //runHuffman(fileInBytes);
+        runLZW(fileInBytes);
     }
 
     private void runHuffman(byte[] data){
-
         ArrayList<Byte> list= new ArrayList<>();
         for(byte b: data){
             list.add(b);
@@ -76,107 +73,142 @@ public class HuffLZW {
         }
         System.out.println(unsignedIntList);
 
-        //Build Freq table
-        int freq[] = new int[unsignedIntList.size()];
-        //ArrayList<Integer> freq = new ArrayList<>(1024);
-        for(int i = 0; i<unsignedIntList.size(); i++){
-            //freq.add(unsignedIntList.get(i), freq.get(i) + 1);
-            //freq[unsignedIntList.get(i) -1] += 1;
-            freq[unsignedIntList.get(i)] += 1;
 
-        }
-
-
+        //Building a frequency matrix
         ArrayList<Integer> newFreq= new ArrayList<>();
-        //int []newfreq = new int[unsignedIntList.size()];
         for(int i =0; i<data.length; i+=4){
             int temp = getBytesAsWord(data, 0);
             newFreq.add(temp);
         }
 
-
-        /*
-        //printing
-        for(int i : freq){
-            System.out.println(i);
-        }
-        */
         PriorityQueue<Node> pq = new PriorityQueue<>(unsignedIntList.size(), new huffComparator());
-        //for(int i : freq) {
-        int temp = freq[255];
-        System.out.println(temp);
-        System.out.println(temp);
-        System.out.println(Arrays.toString(freq));
-
-/*
-        for(int i = 0; i< freq.length; i++){
-            if(freq[i] != 0) {
-                Node node = new Node();
-                node.x = String.valueOf(i);
-                // node.data = freq.get(i);
-                node.data = freq[i];
-
-                pq.add(node);
-            }
-        }
-        */
+        Node root = null;
 
         for(int i = 0; i< newFreq.size(); i++){
                 Node node = new Node();
                 node.x = String.valueOf(i);
-                // node.data = freq.get(i);
                 node.data = newFreq.get(i);
-
                 pq.add(node);
         }
 
-        Node root = null;
-
-        while(pq.size()>1){
-            Node x = pq.peek();
+        do{
+            Node compareNode1 = pq.peek();
             pq.poll();
-
-            Node y = pq.peek();
+            Node compareNode2 = pq.peek();
             pq.poll();
 
             Node newNode = new Node();
-            newNode.data = x.data + y.data;
-            newNode.x = "-";
-            newNode.left = x;
-            newNode.right = y;
+            assert compareNode1 != null;
+            assert compareNode2 != null;
+
+            //sum of two comparing nodes
+            newNode.data = compareNode1.data + compareNode2.data;
+            newNode.left = compareNode1;
+            newNode.right = compareNode2;
             root = newNode;
             pq.add(newNode);
+        } while(pq.size()>1);
 
-        }
-
-        printCode(root, "");
+        printPriorityQueue(root, "");
 
         System.out.print(compressed);
         int totalBitsAfterCompression = 0;
         for(String i : compressed) {
             totalBitsAfterCompression += i.length();
         }
-        System.out.println(totalBitsAfterCompression);
-        System.out.println(totalBitsAfterCompression);
 
-    
         //display results
-        int beforeCompression = data.length;
-        Huffman.setText("Before" + beforeCompression + "After" + totalBitsAfterCompression + " bits");
+        int beforeCompression = data.length * 8;
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(500, 200);
+        frame.setTitle("Huffman Compression");
+        JTextField before = new JTextField(20);
+        JTextField after = new JTextField(20);
+        JTextField ratio = new JTextField(20);
+        before.setText("Size before Compression: "+ beforeCompression + " bits");
+        after.setText("Size after Compression: " + totalBitsAfterCompression + " bits");
+        float percent = ((float) beforeCompression/totalBitsAfterCompression);
+        ratio.setText("Compression Ratio: " + percent);
+        frame.add(before);
+        frame.add(after);
+        frame.add(ratio);
+
+        frame.setVisible(true);
 
     }
+    private void runLZW(byte[] data){
+        ArrayList<Byte> list= new ArrayList<>();
+        for(byte b: data){
+            list.add(b);
+        }
+        ArrayList<Integer> listInteger = new ArrayList<>();
+        for(byte b: data){
+            listInteger.add(Integer.valueOf(String.valueOf(b)));
+        }
+        System.out.println(listInteger);
+        ArrayList<Integer> unsignedIntList = new ArrayList<>();
+        System.out.println(" ");
+        for (byte audioByte : data) {
+            int temp = byteToUnsignedInt(audioByte);
+            unsignedIntList.add(temp);
+        }
+        System.out.println(unsignedIntList);
+
+
+        ArrayList<String> dictionary = new ArrayList<>();
+        dictionary.add((unsignedIntList.get(0)).toString());
+        dictionary.add((unsignedIntList.get(1)).toString());
+        dictionary.add((unsignedIntList.get(2)).toString());
+
+
+        ArrayList<Integer> output = new ArrayList<>();
+
+        //String currentSymbol = dictionary.get(2);
+        String currentSymbol = "";
+
+        for(int i = 0; i< unsignedIntList.size(); i++){
+        //for(int i : unsignedIntList){
+            //String concatenated = unsignedIntList.get(current).toString() + unsignedIntList.get(current+1).toString();
+            String concatenated = currentSymbol + unsignedIntList.get(i);
+            if(dictionary.contains(concatenated)){
+                //currentSymbol = currentSymbol + unsignedIntList.get(current).toString();
+                currentSymbol = concatenated;
+            } else {
+                //output.add(dictionary.indexOf(currentSymbol));
+                //output.add(dictionary.indexOf(currentSymbol));
+
+                for(int j = 0; i< dictionary.size(); i++){
+                    if(dictionary.get(j).equals(currentSymbol)){
+                        output.add(j);
+                    }
+                }
+                dictionary.add(concatenated);
+                currentSymbol = "" + unsignedIntList.get(i);
+            }
+
+            System.out.println(output);
+        }
+
+
+        System.out.println(output);
+
+
+
+    }
+
     private int getBytesAsWord(byte[] data, int off){
         return data[off] << 8 & 0xFF00 | data[off+1]&0xFF;
     }
 
-    private static void printCode(Node root, String s){
+    private static void printPriorityQueue(Node root, String s){
         if (root.left == null && root.right == null) {
-            //System.out.print(root.x  + ":" + s);
             return;
         }
-        printCode(root.left, s + "0");
+        assert root.left != null;
+        printPriorityQueue(root.left, s + "0");
         compressed.add(s + "0");
-        printCode(root.right, s + "1");
+        printPriorityQueue(root.right, s + "1");
         compressed.add(s + "1");
     }
 

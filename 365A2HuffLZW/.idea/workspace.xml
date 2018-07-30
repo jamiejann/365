@@ -30,17 +30,16 @@
       <file leaf-file-name="HuffLZW.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/HuffLZW/HuffLZW.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="669">
-              <caret line="204" column="60" selection-start-line="204" selection-start-column="60" selection-end-line="204" selection-end-column="60" />
+            <state relative-caret-position="360">
+              <caret line="177" column="52" lean-forward="true" selection-start-line="177" selection-start-column="52" selection-end-line="177" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4720#4721#0" expanded="true" />
-                <element signature="e#4785#4786#0" expanded="true" />
-                <element signature="e#4932#4933#0" expanded="true" />
-                <element signature="e#4976#4977#0" expanded="true" />
+                <element signature="e#6387#6388#0" expanded="true" />
+                <element signature="e#6452#6453#0" expanded="true" />
+                <element signature="e#6859#6860#0" expanded="true" />
+                <element signature="e#6903#6904#0" expanded="true" />
                 <element signature="e#5246#5247#0" expanded="true" />
                 <element signature="e#5292#5293#0" expanded="true" />
-                <marker date="1532911881491" expanded="true" signature="3289:3401" ph="..." />
               </folding>
             </state>
           </provider>
@@ -63,8 +62,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/HuffLZW/HuffLZW.java" />
         <option value="$PROJECT_DIR$/src/com/HuffLZW/HuffLZW.form" />
+        <option value="$PROJECT_DIR$/src/com/HuffLZW/HuffLZW.java" />
       </list>
     </option>
   </component>
@@ -79,7 +78,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
-    <option name="width" value="974" />
+    <option name="width" value="1269" />
     <option name="height" value="1087" />
   </component>
   <component name="ProjectView">
@@ -213,15 +212,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532899964619</updated>
-      <workItem from="1532899968477" duration="11425000" />
+      <workItem from="1532899968477" duration="19587000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11425000" />
+    <option name="totallyTimeSpent" value="19587000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1032" height="1087" extended-state="0" />
+    <frame x="-7" y="0" width="1269" height="1087" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" />
@@ -238,13 +237,13 @@
       <window_info anchor="bottom" id="Terminal" />
       <window_info id="Capture Tool" />
       <window_info id="Designer" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18799213" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15243416" />
       <window_info anchor="right" id="Database" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" />
       <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.28806585" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.36316872" />
       <window_info id="Favorites" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -262,7 +261,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/HuffLZW/HuffLZW.java</url>
+          <line>173</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="8" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -285,17 +292,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/HuffLZW/HuffLZW.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="669">
-          <caret line="204" column="60" selection-start-line="204" selection-start-column="60" selection-end-line="204" selection-end-column="60" />
+        <state relative-caret-position="360">
+          <caret line="177" column="52" lean-forward="true" selection-start-line="177" selection-start-column="52" selection-end-line="177" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4720#4721#0" expanded="true" />
-            <element signature="e#4785#4786#0" expanded="true" />
-            <element signature="e#4932#4933#0" expanded="true" />
-            <element signature="e#4976#4977#0" expanded="true" />
+            <element signature="e#6387#6388#0" expanded="true" />
+            <element signature="e#6452#6453#0" expanded="true" />
+            <element signature="e#6859#6860#0" expanded="true" />
+            <element signature="e#6903#6904#0" expanded="true" />
             <element signature="e#5246#5247#0" expanded="true" />
             <element signature="e#5292#5293#0" expanded="true" />
-            <marker date="1532911881491" expanded="true" signature="3289:3401" ph="..." />
           </folding>
         </state>
       </provider>
