@@ -175,23 +175,41 @@ public class HuffLZW {
                 //currentSymbol = currentSymbol + unsignedIntList.get(current).toString();
                 currentSymbol = concatenated;
             } else {
+                output.add(dictionary.indexOf(currentSymbol));
                 //output.add(dictionary.indexOf(currentSymbol));
-                //output.add(dictionary.indexOf(currentSymbol));
-
+/*
                 for(int j = 0; i< dictionary.size(); i++){
                     if(dictionary.get(j).equals(currentSymbol)){
                         output.add(j);
                     }
                 }
+                */
                 dictionary.add(concatenated);
                 currentSymbol = "" + unsignedIntList.get(i);
             }
-
-            System.out.println(output);
         }
+        int totalBitsAfterCompression = output.size() * 8;
+        //System.out.println(output.size());
 
+        //display results
+        int beforeCompression = data.length * 8 ;
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(500, 200);
+        frame.setTitle("LZW Compression");
+        JTextField before = new JTextField(20);
+        JTextField after = new JTextField(20);
+        JTextField ratio = new JTextField(20);
+        before.setText("Size before Compression: "+ beforeCompression + " bits");
+        after.setText("Size after Compression: " + totalBitsAfterCompression + " bits");
+        float percent = ((float) beforeCompression/totalBitsAfterCompression);
+        ratio.setText("Compression Ratio: " + percent);
+        frame.add(before);
+        frame.add(after);
+        frame.add(ratio);
 
-        System.out.println(output);
+        frame.setVisible(true);
+
 
 
 
