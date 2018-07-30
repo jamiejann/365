@@ -5,12 +5,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.Buffer;
 import java.util.Arrays;
 
 public class Lossy {
     private JTextField textField1;
     private JButton button1;
     private JPanel panel;
+    private JButton selectIM3Button;
 
     public Lossy(){
         button1.addActionListener(e -> {
@@ -21,14 +23,34 @@ public class Lossy {
             textField1.setText(fileName);
 
             try {
-                readImageByteByByte(f);
+                byte[] bytesToRunLossy = readImageByteByByte(f);
+                runLossy(bytesToRunLossy);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         });
+
+        selectIM3Button.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            String fileName = f.getAbsolutePath();
+            textField1.setText(fileName);
+
+            try {
+                byte[] bytesForDecompression = readImageByteByByte(f);
+                runDecompress(bytesForDecompression);
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
     }
 
-    private void readImageByteByByte(File file) throws IOException{
+
+
+    private byte[] readImageByteByByte(File file) throws IOException{
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
         int read;
@@ -41,7 +63,8 @@ public class Lossy {
             fileInBytes = out.toByteArray();
         } while((read = in.read(buff))>0);
 
-        runLossy(fileInBytes);
+        return fileInBytes;
+        //runLossy(fileInBytes);
 }
 
     private void runLossy(byte [] data) throws IOException {
@@ -76,11 +99,6 @@ public class Lossy {
 
         for(int i = 0; i< height; i=i+2){
             for(int j = 0; j< width; j=j+2){
-                //int pixelVal1 = image.getRGB(i, j);
-                //int pixelVal2 = image.getRGB(i, j+1);
-                //int pixelVal3 = image.getRGB(i+1, j);
-                //int pixelVal4 = image.getRGB(i+1, j+1);
-                //int average = (pixelVal1 + pixelVal2 + pixelVal3 + pixelVal4)/4;
 
                 Color color1 = new Color(image.getRGB(i,j));
                 int red1 = color1.getRed();
@@ -130,22 +148,35 @@ public class Lossy {
 
 
 
-        //Saving the file to IM3
+        //Saving the file to IM3 & BMP
         ByteArrayOutputStream resultInByteArray = new ByteArrayOutputStream();
         ImageIO.write(result, "jpg", resultInByteArray);
         byte[] byteResult = resultInByteArray.toByteArray();
 
-        try(FileOutputStream stream = new FileOutputStream("C://Users/egg/Desktop/Compressed.im3")){
+        //try(FileOutputStream stream = new FileOutputStream("C://Users/egg/Desktop/Compressed.im3")){
+        try(FileOutputStream stream = new FileOutputStream("Compressed.im3")){
             stream.write(byteResult);
         }
-
-
         try {
-            //ImageIO.write(result, "im3", new File("C://Users/egg/Desktop/Compressed.im3"));
-            ImageIO.write(result, "jpg", new File("C://Users/egg/Desktop/CompressedInJPG.jpg"));
+            //ImageIO.write(result, "bmp", new File("C://Users/egg/Desktop/CompressedInJPG.bmp"));
+            ImageIO.write(result, "bmp", new File("CompressedInBMP.bmp"));
         } catch(IOException e){
 
         }
+    }
+
+    private void runDecompress(byte[] bytesForDecompression) {
+        BufferedImage image = createImageFromBytes(bytesForDecompression);
+
+        JFrame originalFrame = buildFrame();
+        JPanel originalPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
+        };
+        originalFrame.add(originalPane);
     }
 
     /**
