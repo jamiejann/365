@@ -83,7 +83,6 @@ public class HuffLZW {
 
         PriorityQueue<Node> pq = new PriorityQueue<>(unsignedIntList.size(), new huffComparator());
         Node root = null;
-
         for(int i = 0; i< newFreq.size(); i++){
                 Node node = new Node();
                 node.x = String.valueOf(i);
