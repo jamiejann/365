@@ -85,16 +85,6 @@ public class Lossy {
         originalFrame.add(originalPane);
         System.out.println(Arrays.toString(data));
 
-        //Compression
-        //for(int i = 0; i<width; i=i+2){
-        //    for(int j = 0; j<height; j++) {
-        //        int pixelVal = image.getRGB(i, j);
-        //        int nextPixelVal = image.getRGB(i+1, j);
-        //        //Color mycolor = new Color(image.getRGB(i, j));
-        //        //Color nextColor = new Color(image.getRGB(i+1,j));
-        //    }
-        //}
-        int[][] image2d = new int[height][width];
         BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         for(int i = 0; i< height; i=i+2){
