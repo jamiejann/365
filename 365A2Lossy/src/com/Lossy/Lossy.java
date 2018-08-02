@@ -14,6 +14,9 @@ public class Lossy {
     private JPanel panel;
     private JButton selectIM3Button;
 
+    /**
+     *  Method to react to button presses, adding files to the compressor.
+     */
     public Lossy(){
         button1.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
@@ -48,8 +51,12 @@ public class Lossy {
 
     }
 
-
-
+    /**
+     * Method to read Image file byte by byte. This method is reused from my own Project 1.
+     * @param file
+     * @return
+     * @throws IOException
+     */
     private byte[] readImageByteByByte(File file) throws IOException{
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
@@ -64,9 +71,15 @@ public class Lossy {
         } while((read = in.read(buff))>0);
 
         return fileInBytes;
-        //runLossy(fileInBytes);
-}
+    }
 
+    /**
+     * Method to run the Lossy portion of the project. It first displays the original image, then
+     * compresses it via taking the average of 4 blocks, then loops through the whole image. Then
+     * displays the compressed image.
+     * @param data
+     * @throws IOException
+     */
     private void runLossy(byte [] data) throws IOException {
 
         BufferedImage image = createImageFromBytes(data);
@@ -120,10 +133,6 @@ public class Lossy {
                 result.setRGB(i, j+1, averageColor.getRGB());
                 result.setRGB(i+1, j, averageColor.getRGB());
                 result.setRGB(i+1, j+1, averageColor.getRGB());
-               // image2d[i][j] = average;
-               // image2d[i][j+1] = average;
-               // image2d[i+1][j] = average;
-               // image2d[i+1][j+1] = average;
             }
         }
         JFrame lossyFrame = buildFrame();
@@ -136,25 +145,21 @@ public class Lossy {
         };
         lossyFrame.add(lossyPanel);
 
-
-
         //Saving the file to IM3 & BMP
         ByteArrayOutputStream resultInByteArray = new ByteArrayOutputStream();
         ImageIO.write(result, "jpg", resultInByteArray);
         byte[] byteResult = resultInByteArray.toByteArray();
 
-        //try(FileOutputStream stream = new FileOutputStream("C://Users/egg/Desktop/Compressed.im3")){
         try(FileOutputStream stream = new FileOutputStream("Compressed.im3")){
             stream.write(byteResult);
         }
-        try {
-            //ImageIO.write(result, "bmp", new File("C://Users/egg/Desktop/CompressedInJPG.bmp"));
-            ImageIO.write(result, "bmp", new File("CompressedInBMP.bmp"));
-        } catch(IOException e){
-
-        }
     }
 
+    /**
+     * Method to run the decompresser, takes in a byte array of the image and then disaplys
+     * it in a new frame.
+     * @param bytesForDecompression
+     */
     private void runDecompress(byte[] bytesForDecompression) {
         BufferedImage image = createImageFromBytes(bytesForDecompression);
 
