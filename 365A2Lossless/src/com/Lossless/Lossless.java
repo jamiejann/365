@@ -1,6 +1,8 @@
 package com.Lossless;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -43,57 +45,94 @@ public class Lossless {
         return fileInBytes;
         //runLossy(fileInBytes);
     }
-    private void runLossless(byte[] data) {
+    private void runLossless(byte[] data) throws IOException {
 
-        /*
-        ArrayList<Byte> list= new ArrayList<>();
-        for(byte b: data){
-            list.add(b);
-        }
-        ArrayList<Integer> listInteger = new ArrayList<>();
-        for(byte b: data){
-            listInteger.add(Integer.valueOf(String.valueOf(b)));
-        }
-        System.out.println(listInteger);
-        ArrayList<Integer> unsignedIntList = new ArrayList<>();
-        System.out.println(" ");
-        for (byte audioByte : data) {
-            int temp = byteToUnsignedInt(audioByte);
-            unsignedIntList.add(temp);
-        }
-        System.out.println(unsignedIntList);
+        BufferedImage image = createImageFromBytes(data);
 
-
-        //Building a frequency matrix
-        ArrayList<Integer> newFreq= new ArrayList<>();
-        for(int i =0; i<data.length; i+=4){
-            int temp = getBytesAsWord(data, 0);
-            newFreq.add(temp);
-        }
-        System.out.println(newFreq);
-        */
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
         int countConsecutive = 0;
         for(int i = 0; i<data.length; i++){
             countConsecutive++;
+            //if next element is different, add this element to result
+
             if(i + 1 >= data.length || data[i] != data[i+1]){
-                list.add("*");
-                list.add(String.valueOf(data[i]));
-                list.add(String.valueOf(countConsecutive));
-                list.add("*");
+                //result.add(" ");
+                result.add(String.valueOf(data[i]));
+                //result.add(countConsecutive);
+                if(countConsecutive !=1){
+                    result.add("A");
+                    result.add(String.valueOf(countConsecutive));
+                }
+                //result.add(String.valueOf(countConsecutive));
+                //result.add(" ");
                 countConsecutive=0;
             }
-
-
-           // while(data[i] == data[i+1]){
-           //     list.add("*");
-           //     list.add(String.valueOf(data[i]));
-           //     list.add("*");
-           // }
         }
 
-        System.out.println(list);
+        System.out.println(result);
+
+        ByteArrayOutputStream resultInByteArray = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", resultInByteArray);
+        byte[] byteResult = resultInByteArray.toByteArray();
+
+        try(FileOutputStream stream = new FileOutputStream("Compressed.in3")){
+            stream.write(byteResult);
+        }
+
+//        PrintWriter pw = new PrintWriter(new FileOutputStream("Compressed.in3"));
+//        for(byte s : data){
+//            pw.println(s);
+//        }
+//        pw.close();
+
+        //Saving file
+        //Saving the file to IM3 & BMP
+
+        //byte[] res = new byte[result.size()];
+        //for(int i = 0; i<result.size(); i++){
+        //    res = result.get(i).getBytes();
+        //}
+
+/*
+        ByteArrayOutputStream resultInByteArray = new ByteArrayOutputStream();
+        DataOutputStream output = new DataOutputStream(resultInByteArray);
+        for(String s : result){
+            output.writeUTF(s);
+        }
+        //byte [] byteResult = resultInByteArray.toByteArray();
+        byte [] byteResult = resultInByteArray.toByteArray();
+
+        //try(FileOutputStream stream = new FileOutputStream("C://Users/egg/Desktop/Compressed.im3")){
+        try(FileOutputStream stream = new FileOutputStream("Compressed.im3")){
+            //stream.write(byteResult);
+            stream.write(byteResult);
+        }
+        */
+        /*
+        try {
+            //ImageIO.write(result, "bmp", new File("C://Users/egg/Desktop/CompressedInJPG.bmp"));
+            ImageIO.write(result, "bmp", new File("CompressedInBMP.bmp"));
+        } catch(IOException e){
+
+        }
+        */
     }
+
+    /**
+     * Helper method to create image from modified byte array
+     * @param data
+     * @return
+     */
+    private BufferedImage createImageFromBytes(byte[] data) {
+        ByteArrayInputStream stream = new ByteArrayInputStream(data);
+        try {
+            return ImageIO.read(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 
