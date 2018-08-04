@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="365A2HuffLZW:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/365A2HuffLZW_jar</output-path>
+    <root id="archive" name="365A2HuffLZW.jar">
+      <element id="module-output" name="365A2HuffLZW" />
+    </root>
+  </artifact>
+</component>

@@ -2,6 +2,7 @@ package com.Lossless;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -10,8 +11,12 @@ public class Lossless {
     private JButton selectBMPButton;
     private JPanel panel1;
     private JTextField textField1;
-    private JButton selectIM2Button;
+    private JButton selectIN3Button;
 
+    /**
+     * Method for this application to select files and display the names
+     * of the files on the textbox
+     */
     public Lossless(){
         selectBMPButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
@@ -27,6 +32,38 @@ public class Lossless {
                 e1.printStackTrace();
             }
         });
+        selectIN3Button.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            String fileName = f.getAbsolutePath();
+            textField1.setText(fileName);
+
+            try {
+                byte[] bytesToRunLossy = readImageByteByByte(f);
+                runDecompress(bytesToRunLossy);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Main method for this application to decompress IN3 file for displaying
+     * @param data
+     */
+    private void runDecompress(byte[] data) {
+        BufferedImage image = createImageFromBytes(data);
+
+        JFrame originalFrame = buildFrame();
+        JPanel originalPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
+        };
+        originalFrame.add(originalPane);
     }
 
     private byte[] readImageByteByByte(File file) throws IOException{
@@ -43,8 +80,13 @@ public class Lossless {
         } while((read = in.read(buff))>0);
 
         return fileInBytes;
-        //runLossy(fileInBytes);
     }
+
+    /**
+     * Method for compressing the image losslessly into a IN3 file
+     * @param data
+     * @throws IOException
+     */
     private void runLossless(byte[] data) throws IOException {
 
         BufferedImage image = createImageFromBytes(data);
@@ -54,23 +96,17 @@ public class Lossless {
         for(int i = 0; i<data.length; i++){
             countConsecutive++;
             //if next element is different, add this element to result
-
             if(i + 1 >= data.length || data[i] != data[i+1]){
-                //result.add(" ");
                 result.add(String.valueOf(data[i]));
-                //result.add(countConsecutive);
                 if(countConsecutive !=1){
                     result.add("A");
                     result.add(String.valueOf(countConsecutive));
                 }
-                //result.add(String.valueOf(countConsecutive));
-                //result.add(" ");
                 countConsecutive=0;
             }
         }
 
-        System.out.println(result);
-
+        //Saving Result to IN3 File
         ByteArrayOutputStream resultInByteArray = new ByteArrayOutputStream();
         ImageIO.write(image, "jpg", resultInByteArray);
         byte[] byteResult = resultInByteArray.toByteArray();
@@ -79,43 +115,26 @@ public class Lossless {
             stream.write(byteResult);
         }
 
-//        PrintWriter pw = new PrintWriter(new FileOutputStream("Compressed.in3"));
-//        for(byte s : data){
-//            pw.println(s);
-//        }
-//        pw.close();
+        //Showing the compression ratio
+        int totalBitsAfterCompression = byteResult.length * 8;
+        int totalBitsBeforeCompression = data.length *8;
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(500, 200);
+        frame.setTitle("Lossless Compression");
+        JTextField before = new JTextField(20);
+        JTextField after = new JTextField(20);
+        JTextField ratio = new JTextField(20);
+        before.setText("Size before Compression: "+ totalBitsBeforeCompression + " bits");
+        after.setText("Size after Compression: " + totalBitsAfterCompression + " bits");
+        float percent = ((float) totalBitsBeforeCompression/totalBitsAfterCompression);
+        ratio.setText("Compression Ratio: " + percent);
+        frame.add(before);
+        frame.add(after);
+        frame.add(ratio);
+        frame.setVisible(true);
 
-        //Saving file
-        //Saving the file to IM3 & BMP
 
-        //byte[] res = new byte[result.size()];
-        //for(int i = 0; i<result.size(); i++){
-        //    res = result.get(i).getBytes();
-        //}
-
-/*
-        ByteArrayOutputStream resultInByteArray = new ByteArrayOutputStream();
-        DataOutputStream output = new DataOutputStream(resultInByteArray);
-        for(String s : result){
-            output.writeUTF(s);
-        }
-        //byte [] byteResult = resultInByteArray.toByteArray();
-        byte [] byteResult = resultInByteArray.toByteArray();
-
-        //try(FileOutputStream stream = new FileOutputStream("C://Users/egg/Desktop/Compressed.im3")){
-        try(FileOutputStream stream = new FileOutputStream("Compressed.im3")){
-            //stream.write(byteResult);
-            stream.write(byteResult);
-        }
-        */
-        /*
-        try {
-            //ImageIO.write(result, "bmp", new File("C://Users/egg/Desktop/CompressedInJPG.bmp"));
-            ImageIO.write(result, "bmp", new File("CompressedInBMP.bmp"));
-        } catch(IOException e){
-
-        }
-        */
     }
 
     /**
@@ -133,16 +152,15 @@ public class Lossless {
         return null;
     }
 
-
-
-
-
-
-    private int getBytesAsWord(byte[] data, int off){
-        return data[off] << 8 & 0xFF00 | data[off+1]&0xFF;
-    }
-    private static int byteToUnsignedInt(byte b){
-        return 0x00 << 24 | b & 0xff;
+    /**
+     * Helper Method to create new frame.
+     * @return
+     */
+    private static JFrame buildFrame(){
+        JFrame frame = new JFrame();
+        frame.setSize(704,576);
+        frame.setVisible(true);
+        return frame;
     }
 
     public static void main(String[] args) {

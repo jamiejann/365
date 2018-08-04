@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="365A2Lossless:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/365A2Lossless_jar</output-path>
+    <root id="archive" name="365A2Lossless.jar">
+      <element id="module-output" name="365A2Lossless" />
+    </root>
+  </artifact>
+</component>

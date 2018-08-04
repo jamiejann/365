@@ -48,7 +48,6 @@ public class Lossy {
                 e1.printStackTrace();
             }
         });
-
     }
 
     /**
@@ -153,6 +152,24 @@ public class Lossy {
         try(FileOutputStream stream = new FileOutputStream("Compressed.im3")){
             stream.write(byteResult);
         }
+        //Showing the compression ratio
+        int totalBitsAfterCompression = byteResult.length * 8;
+        int totalBitsBeforeCompression = data.length *8;
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(500, 200);
+        frame.setTitle("Lossy Compression");
+        JTextField before = new JTextField(20);
+        JTextField after = new JTextField(20);
+        JTextField ratio = new JTextField(20);
+        before.setText("Size before Compression: "+ totalBitsBeforeCompression + " bits");
+        after.setText("Size after Compression: " + totalBitsAfterCompression + " bits");
+        float percent = ((float) totalBitsBeforeCompression/totalBitsAfterCompression);
+        ratio.setText("Compression Ratio: " + percent);
+        frame.add(before);
+        frame.add(after);
+        frame.add(ratio);
+        frame.setVisible(true);
     }
 
     /**
